@@ -1,4 +1,3 @@
-import MyFetcherConfig from './MyFetcherConfig'
 import {
     CreateInstanceAction,
     DeleteAction,

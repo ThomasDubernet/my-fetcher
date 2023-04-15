@@ -1,4 +1,3 @@
-import FetchOptions from './@types/FetchOptions'
 import {
     DeleteAction,
     GetAction,
