@@ -1,4 +1,4 @@
-import MyFetcher from './@types/MyFetcher'
+import FetchOptions from './@types/FetchOptions'
 import {
     DeleteAction,
     GetAction,
@@ -6,13 +6,19 @@ import {
     PostAction,
     PutAction,
 } from './@types/actions'
-import createInstance from './createInstance'
 
-const myFetcher = (): MyFetcher => {
-    // fetch with config
+const createInstance = (baseUrl: string, defaultConfig: RequestInit) => {
+    const { headers, ...rest } = defaultConfig
 
     const fetch = async (url: string, config: RequestInit) => {
-        const promise = window.fetch(url, config)
+        const promise = window.fetch(baseUrl + url, {
+            ...rest,
+            ...config,
+            headers: {
+                ...headers,
+                ...config.headers,
+            },
+        })
 
         const response = await promise
         if (!response.ok) {
@@ -22,7 +28,6 @@ const myFetcher = (): MyFetcher => {
         }
     }
 
-    // get
     const get: GetAction = async (url: string, config: RequestInit) => {
         return fetch(url, {
             ...config,
@@ -79,8 +84,7 @@ const myFetcher = (): MyFetcher => {
         put,
         patch,
         delete: remove,
-        create: createInstance,
     }
 }
 
-export default myFetcher
+export default createInstance
